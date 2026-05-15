@@ -12,6 +12,24 @@ class IndicePrimario:
     def __init__(self):
         self.indices = []
 
+    def busca_elemento_indice(self, id: int) -> int | None:
+        '''Retorna o indice de um elemento na lista, baseado em seu id.
+        Retorna None se não encotrar.'''
+        i = 0
+        while i < len(self.indices) - 1:
+            if id == self.indices[i][0]:
+                return i
+            i += 1
+        
+        return None
+    
+    def busca_elemento_offset(self, id: int) -> int | None:
+        '''Retorna o offset de um elemento pelo seu id. Retorna None se não encontrar.'''
+        ind_elem = self.busca_elemento_indice(id)
+        if ind_elem is None:
+            return None
+        return self.indices[ind_elem][1]
+
     def adiciona_elemento(self, elemento: tuple[int, int]) -> None:
         '''Adiciona elemento no indice'''
         #insere ordenado
@@ -27,9 +45,14 @@ class IndicePrimario:
                 pos_correta = True
             i -= 1
     
-    def remove_elemento(self, id: str) -> None:
-        '''Remove um elemento pelo id'''
-        raise NotImplementedError
+    def remove_elemento(self, id: int) -> None:
+        '''Remove um elemento pelo id. Se não encontrar, não faz nada.'''
+        ind_elem = self.busca_elemento_indice(id)
+        if ind_elem is None:
+            return
+        
+        for i in range(ind_elem, len(self.indices)):
+            self.indices[i] = self.indices[i+1]
     
     def cria_arquivo(self, nome_saida: str) -> None:
         '''Cria um arquivo binário com os dados do indice'''
